@@ -19,6 +19,7 @@ class GameRunner:
         Start running the game with default settings.
         :return: None
         """
+        self.__screen.start_screen()
         self.__timer.start()
 
     def every_second(self):
@@ -37,6 +38,7 @@ class GameRunner:
         # screen - print "well done" message
         self.__score += score
 
+
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
         self.__remaining_time += Cfg.Buy_time_seconds
@@ -52,9 +54,8 @@ class GameRunner:
         pass
 
 
-
 if __name__ == "__main__":
-    board = Board()
     runner = GameRunner()
+    board = Board()
     screen = Screen(runner, board)
     screen.start_screen()

@@ -53,6 +53,21 @@ class Board:
         self.__current_word = ""
         self.__selected_indices = []
 
+    def cancel_letter(self, i, j):
+        """
+        Cancels last selection by index, if index really was the last selection.
+        :param i: row
+        :param j: col
+        :return: True if canceled, False if not
+        """
+        last_selected = self.__selected_indices[-1]
+        if (i, j) == last_selected:
+            letter = self.__board[last_selected[0]][last_selected[1]]
+            self.__selected_indices.remove(self.__selected_indices[-1])
+            self.__current_word = self.__current_word[0:-len(letter)]
+            return True
+        return False
+
     def check_valid_position(self, row, col):
         """
         Checks if a given letter is adjacent to the last selected
