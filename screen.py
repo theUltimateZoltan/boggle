@@ -5,10 +5,9 @@ from boggle import GameRunner
 
 
 class Screen:
-    def __init__(self,runner, board):
+    def __init__(self, board):
         self._init_graphics(board)
         self._board = board
-        self._runner = runner
 
     def _init_graphics(self, board):
         self._root = Tk()
@@ -119,6 +118,7 @@ class Screen:
         else:
             self.__wrong["text"] += word+"\n"
 
+
     def _build_board(self, board, root):
         """
         Build the board of the game using a board object
@@ -149,16 +149,9 @@ class Screen:
         :param j: button col
         :return: None
         """
-        if (i,j) in self._board.get_selected_indices():
-            if self._board.cancel_letter(i,j):
-                button["bg"] = "#FFF"
-                button["fg"] = "#1ABCB4"
-
-        elif self._board.add_letter((i, j)):
+        if self._board.check_valid_position(i, j):
             button["bg"] = "#1ABCB4"
             button["fg"] = "#FFF"
-
-        self.__wordplace["text"] = self._board.get_current_word()
 
     def _build_wordplace(self, root):
         """
@@ -170,8 +163,7 @@ class Screen:
         fr.pack_propagate(False)
 
         #label
-        font = Font(family="Segoe UI", size=15)
-        label = Label(fr, bg="#1ABCB4", fg="#FFF", width=23, font=font)
+        label = Label(fr, bg="#1ABCB4", fg="#FFF", width=36)
         label.pack(side="left", fill=BOTH)
 
         #button
@@ -184,15 +176,12 @@ class Screen:
 
         fr.pack(pady=20)
 
-        return label
-
     def _add_word_pressed(self):
         """
-        called when add word is pressed
+        called when work is added
         :return: None
         """
-        word = self.board.get_current_word()
-
+        pass
 
     def clear_lists(self):
         """

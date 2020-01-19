@@ -8,6 +8,8 @@ import sys
 
 class GameRunner:
     def __init__(self):
+        self.__board = Board()
+        self.__screen = Screen(self.__board)
         self.__score = 0
         self.__timer = Timer(1.0, self.every_second)
         self.__remaining_time = Cfg.game_time
@@ -19,6 +21,7 @@ class GameRunner:
         Start running the game with default settings.
         :return: None
         """
+        self.__screen.start_screen()
         self.__timer.start()
 
     def every_second(self):
@@ -37,6 +40,26 @@ class GameRunner:
         # screen - print "well done" message
         self.__score += score
 
+    def add_word(self, word):
+        """
+        Check if the word is valid.
+        if valid and not yet marked, add as correct.
+        if invalid and not yet marked - add as wrong.
+        if already marked - display informative message.
+        :param word: The word to check and add
+        :return: None
+        """
+        if word in self.__correct_words or word in self.__wrong_words:
+            # screen - display informative message.
+            return
+        if self.__board.check_valid_word(word):
+            self.__correct_words.add(word)
+            self.add_score(Cfg.score_calc(word))
+            self.__screen.add_word(word, True)
+        else:
+            self.__wrong_words.add(word)
+            self.__screen.add_word(word, False)
+
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
         self.__remaining_time += Cfg.Buy_time_seconds
@@ -52,9 +75,6 @@ class GameRunner:
         pass
 
 
-
 if __name__ == "__main__":
-    board = Board()
     runner = GameRunner()
-    screen = Screen(runner, board)
-    screen.start_screen()
+    runner.run()
