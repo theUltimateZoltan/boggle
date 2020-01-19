@@ -158,6 +158,8 @@ class Screen:
             button["bg"] = "#1ABCB4"
             button["fg"] = "#FFF"
 
+        self.__wordplace["text"] = self._board.get_current_word()
+
     def _build_wordplace(self, root):
         """
         Build the line of text in which a work will be assembled by the user.
@@ -168,7 +170,8 @@ class Screen:
         fr.pack_propagate(False)
 
         #label
-        label = Label(fr, bg="#1ABCB4", fg="#FFF", width=36)
+        font = Font(family="Segoe UI", size=20)
+        label = Label(fr, bg="#1ABCB4", fg="#FFF", width=17, font=font)
         label.pack(side="left", fill=BOTH)
 
         #button
@@ -180,6 +183,7 @@ class Screen:
         blueframe.pack(side=RIGHT)
 
         fr.pack(pady=20)
+        return label
 
     def _add_word_pressed(self):
         """
