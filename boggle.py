@@ -1,7 +1,9 @@
+
 from board import Board
 from screen import Screen
 from boggle_config import GameConfig as Cfg
 from threading import Timer
+import sys
 
 
 class GameRunner:
@@ -73,6 +75,4 @@ class GameRunner:
 
 if __name__ == "__main__":
     runner = GameRunner()
-    board = Board()
-    screen = Screen(runner, board)
-    screen.start_screen()
+    runner.run()
