@@ -50,7 +50,11 @@ class GameRunner:
         if word in self.__correct_words or word in self.__wrong_words:
             # screen - display informative message.
             return
-        # TODO : convert boggle_dict to a set of valid words for comparison
+        if self.__board.check_valid_word():
+            self.__correct_words.add(word)
+            self.add_score(Cfg.score_calc(word))
+        else:
+            self.__wrong_words.add(word)
 
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
