@@ -4,7 +4,7 @@ from PIL import ImageTk, Image
 
 
 class Screen:
-    def __init__(self,runner, board):
+    def __init__(self, runner, board):
         self._init_graphics(board)
         self._board = board
         self.runner = runner
@@ -36,7 +36,7 @@ class Screen:
         # build board at center
         self.__boardframe = self._build_board(board, mid_sec)
         # word place under the board
-        self.__wordplace = self._build_wordplace(mid_sec)
+        self._build_wordplace(mid_sec)
         self.build_left_frame(left_sec)
 
     def build_left_frame(self, fr):
@@ -55,7 +55,7 @@ class Screen:
     def draw_logo(self, fr):
         load = Image.open("style/bog_logo.png")
         render = ImageTk.PhotoImage(load)
-        img = Label(fr, image=render)
+        img = Label(fr, image=render, borderwidth=0, highlightthickness=0)
         img.image = render
         img.place(x=0, y=0)
 
@@ -63,19 +63,78 @@ class Screen:
         font = Font(family="Segoe UI", size=12)
         title_font = Font(family="Segoe UI", size=14)
 
-        box = Frame(fr, height=230, width=230, bg="white", highlightthickness=1, highlightbackground="#000")
+        # draw stats box
+        box = Frame(fr, height=230, width=230, bg="white",
+                    highlightthickness=1, highlightbackground="#000")
         box.pack_propagate(False)
         box.pack()
-        box_title = Label(box, bg="#1ABCB4", font=title_font, fg="#FFF", text="Time")
+        box_title = Label(box, bg="#1ABCB4", font=title_font, fg="#FFF",
+                          text="Time              Score")
         box_title.pack(fill=X)
 
         # add start button
-        restart_btn = Button(box, text="Start", bg="#1ABCB4", font=font, fg="white", width=7, activebackground="white")
-        restart_btn.pack(side=BOTTOM, pady=15)
+        restart_btn = Button(box, text="Start", bg="#1ABCB4", font=font,
+                             fg="white", width=7, activebackground="white")
+        restart_btn.pack(side=BOTTOM, pady=12)
 
-        self.draw_time_and_score(box)
+        # draw time and score
+        time = self.draw_time(box)
+        score = self.draw_score(box)
 
-    def draw_time_and_score(self, fr):
+    def draw_time(self, fr):
+        font = Font(family="Segoe UI", size=20)
+
+        # create time label
+        time_label = Label(fr, bg="white", width=16, height=10)
+        time_label.pack(side=LEFT)
+        time_label.pack_propagate(False)
+
+        # add time icon
+        time_img = Image.open("style/time.png")
+        time_img = time_img.resize((60, 62), Image.ANTIALIAS)
+        render_time = ImageTk.PhotoImage(time_img)
+        t_img = Label(time_label, image=render_time, borderwidth=0,
+                      highlightthickness=0)
+        t_img.image = render_time
+        t_img.place(x=25, y=25)
+
+        # add time seconds
+        time_lbl = Label(time_label, width=8, height=2, bg="white")
+        time_lbl.pack(side=BOTTOM)
+        time_lbl.propagate(False)
+        time = Label(time_lbl, text="3:00", font=font, bg="white", fg="black")
+        time.pack()
+        return time
+
+    def draw_score(self, fr):
+        font = Font(family="Segoe UI", size=20)
+
+        # create score label
+        score_label = Label(fr, bg="white", width=16, height=10)
+        score_label.pack(side=RIGHT)
+        score_label.pack_propagate(False)
+
+        # add score icon
+        score_img = Image.open("style/score.png")
+        score_img = score_img.resize((60, 62), Image.ANTIALIAS)
+        render_score = ImageTk.PhotoImage(score_img)
+        s_img = Label(score_label, image=render_score, borderwidth=0,
+                      highlightthickness=0)
+        s_img.image = render_score
+        s_img.place(x=25, y=25)
+
+        # add points amount
+        scr_lbl = Label(score_label, width=6, height=2, bg="white")
+        scr_lbl.pack(side=BOTTOM)
+        scr_lbl.propagate(False)
+        score = Label(scr_lbl, text="0", font=font, bg="white", fg="black")
+        score.pack()
+        return score
+
+    def update_score(self, points=0):
+        pass
+
+    def update_time(self):
         pass
 
     def _build_lists(self, root):
@@ -117,7 +176,6 @@ class Screen:
             self.__correct["text"] += word+"\n"
         else:
             self.__wrong["text"] += word+"\n"
-
 
     def _build_board(self, board, root):
         """

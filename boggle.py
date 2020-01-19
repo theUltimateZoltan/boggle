@@ -38,7 +38,6 @@ class GameRunner:
         # screen - print "well done" message
         self.__score += score
 
-
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
         self.__remaining_time += Cfg.Buy_time_seconds
