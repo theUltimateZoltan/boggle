@@ -7,7 +7,7 @@ import sys
 
 
 class GameRunner:
-    def __init__(self):
+    def __init__(self, board):
         self.__board = Board()
         self.__screen = Screen(self.__board)
         self.__score = 0
