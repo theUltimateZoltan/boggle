@@ -8,6 +8,7 @@ import sys
 
 class GameRunner:
     def __init__(self):
+        self.__screen = Screen()
         self.__board = Board()
         self.__score = 0
         self.__timer = Timer(1.0, self.every_second)
@@ -20,6 +21,7 @@ class GameRunner:
         Start running the game with default settings.
         :return: None
         """
+        self.__screen.start_screen()
         self.__timer.start()
 
     def every_second(self):
@@ -68,6 +70,6 @@ class GameRunner:
         # screen - show end game message
 
 
-if __name__ == "__name__":
+if __name__ == "__main__":
     runner = GameRunner()
     runner.run()
