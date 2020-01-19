@@ -1,15 +1,11 @@
-
 from board import Board
 from screen import Screen
 from boggle_config import GameConfig as Cfg
 from threading import Timer
-import sys
 
 
 class GameRunner:
     def __init__(self):
-        self.__board = Board()
-        self.__screen = Screen(self.__board)
         self.__score = 0
         self.__timer = Timer(1.0, self.every_second)
         self.__remaining_time = Cfg.game_time
@@ -77,4 +73,6 @@ class GameRunner:
 
 if __name__ == "__main__":
     runner = GameRunner()
-    runner.run()
+    board = Board()
+    screen = Screen(runner, board)
+    screen.start_screen()
