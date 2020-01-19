@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter.font import Font
 from PIL import ImageTk, Image
-from boggle import GameRunner
 
 
 class Screen:
