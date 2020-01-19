@@ -17,7 +17,7 @@ class Screen:
         # bind all main sections
         left_sec = Frame(self._root, width=250, height=300)
         mid_sec = Frame(self._root, width=500, height=700)
-        right_sec = Frame(self._root, width=250, height=700)
+        right_sec = Frame(self._root, width=250, height=700, bg="#FFF")
 
         right_sec.pack_propagate(False)
         mid_sec.pack_propagate(False)
@@ -33,7 +33,7 @@ class Screen:
         b = Button(left_sec, text="try")
         b.pack()
 
-        c = Button(mid_sec,text="mid")
+        c = Button(mid_sec, text="mid")
         c.pack()
 
     def _build_lists(self, root):
@@ -42,22 +42,29 @@ class Screen:
         :return: Tuple (correct content, wrong content)
         """
         # define fonts
-        font = Font(family="Segoe UI", size=14)
+        font = Font(family="Segoe UI", size=16)
         title_font = Font(family="Segoe UI", size=18)
 
-        correct = Frame(root, height=500)
-        wrong = Frame(root, height=500)
-        correct.pack(fill=X)
-        wrong.pack(fill=X)
+        correct = Frame(root, height=250, width=230, highlightthickness=1, highlightbackground="#000")
+        wrong = Frame(root, height=250, width=230, highlightthickness=1, highlightbackground="#000")
+        correct.pack_propagate(False)
+        wrong.pack_propagate(False)
+        correct.pack(pady=50)
+        wrong.pack(pady=10)
+
         correct_title = Label(correct, bg="#1ABCB4", font=title_font, fg="#FFF", text="Correct")
         wrong_title = Label(wrong, bg="#FF6D6D", font=title_font, fg="#FFF", text="Wrong")
         correct_title.pack(fill=X)
         wrong_title.pack(fill=X)
+
         correct_content = Label(correct, fg="#1ABCB4", font=font)
         wrong_content = Label(wrong, fg="#FF6D6D", font=font)
         correct_content.pack(fill=X)
         wrong_content.pack(fill=X)
+
         return correct_content, wrong_content
+
+
 
     def add_word(self, word, correct):
         """
@@ -70,6 +77,14 @@ class Screen:
             self.__correct["text"] += word+"\n"
         else:
             self.__wrong["text"] += word+"\n"
+
+    def clear_lists(self):
+        """
+        Clear all contents from correct/wrong lists
+        :return: None
+        """
+        self.__correct["text"] = ""
+        self.__wrong["text"] = ""
 
     def start_screen(self):
         mainloop()

@@ -55,8 +55,10 @@ class GameRunner:
         if self.__board.check_valid_word(word):
             self.__correct_words.add(word)
             self.add_score(Cfg.score_calc(word))
+            self.__screen.add_word(word, True)
         else:
             self.__wrong_words.add(word)
+            self.__screen.add_word(word, False)
 
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
