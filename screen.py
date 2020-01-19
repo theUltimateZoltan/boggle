@@ -14,20 +14,34 @@ class Screen:
         self._root.config(bg="white")
         self._root.resizable(0, 0)  # don't allow resizing
         self._root.geometry("1100x700")
-        # bind all main sections
-        left_sec = Frame(self._root, width=250)
-        mid_sec = Frame(self._root, width=500)
-        right_sec = Frame(self._root, width=250)
-        left_sec.grid(row=1, column=1)
-        mid_sec.grid(row=1, column=2)
-        right_sec.grid(row=1, column=3)
-
+        # self._root.iconbitmap('path')
         # TODO - add icon
-        self.__correct, self.__wrong = self._build_lists(right_sec)
+
+        labelframe = LabelFrame(self._root, text="This is a LabelFrame", bg="blue")
+        labelframe.pack(side=LEFT, fill="both")
+        labelframe2 = LabelFrame(self._root, text="This is a LabelFrame", bg="red")
+        labelframe2.pack(side=LEFT, fill="both")
+        labelframe3 = LabelFrame(self._root, text="This is a LabelFrame", bg="green")
+        labelframe3.pack(side=LEFT, fill="both")
+
+        left = Label(labelframe, text="Inside the LabelFrame")
+        left.pack()
+
+        left = Label(labelframe2, text="Inside the LabelFrame")
+        left.pack()
+
+        left = Label(labelframe3, text="Inside the LabelFrame")
+        left.pack()
 
 
 
+    def left_sec(self, fr):
+        button1 = Button(fr, text="hi")
+        button1.pack()
 
+    def mid_sec(self, fr):
+        button1 = Button(fr, text="hi")
+        button1.pack()
 
     def _build_lists(self, root):
         """
@@ -68,7 +82,8 @@ class Screen:
         else:
             self.__wrong.insert(END, word + "\n")
 
-    def start_screen(self):
+    @staticmethod
+    def start_screen():
         mainloop()
 
     def end_game(self):
