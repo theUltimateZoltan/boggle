@@ -7,6 +7,7 @@ class Board:
 
     def __init__(self):
         self.__board = self.shuffle_board()
+        self.__valid_words = Cfg.load_words()
         self.__current_word = str()
         self.__selected_indices = list()  # list of tuples [(1,2), (3,4),...]
 
@@ -98,6 +99,12 @@ class Board:
             return True
         return False
 
+    def check_valid_word(self, word):
+        """
+        Checks if a given word is valid.
+        :return: boolean value
+        """
+        return word in self.__valid_words
 
 
 
