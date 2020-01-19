@@ -149,7 +149,12 @@ class Screen:
         :param j: button col
         :return: None
         """
-        if self._board.check_valid_position(i, j):
+        if (i, j) in self._board.get_selected_indices():
+            if self._board.cancel_letter(i, j):
+                button["bg"] = "#FFF"
+                button["fg"] = "#1ABCB4"
+
+        elif self._board.add_letter((i, j)):
             button["bg"] = "#1ABCB4"
             button["fg"] = "#FFF"
 

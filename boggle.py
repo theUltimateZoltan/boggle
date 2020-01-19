@@ -38,25 +38,6 @@ class GameRunner:
         # screen - print "well done" message
         self.__score += score
 
-    def add_word(self, word):
-        """
-        Check if the word is valid.
-        if valid and not yet marked, add as correct.
-        if invalid and not yet marked - add as wrong.
-        if already marked - display informative message.
-        :param word: The word to check and add
-        :return: None
-        """
-        if word in self.__correct_words or word in self.__wrong_words:
-            # screen - display informative message.
-            return
-        if self.__board.check_valid_word(word):
-            self.__correct_words.add(word)
-            self.add_score(Cfg.score_calc(word))
-            self.__screen.add_word(word, True)
-        else:
-            self.__wrong_words.add(word)
-            self.__screen.add_word(word, False)
 
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
@@ -75,4 +56,6 @@ class GameRunner:
 
 if __name__ == "__main__":
     runner = GameRunner()
-    runner.run()
+    board = Board()
+    screen = Screen(runner, board)
+    screen.start_screen()
