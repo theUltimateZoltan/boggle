@@ -1,11 +1,10 @@
 from tkinter import *
 from tkinter.font import Font
 from PIL import ImageTk, Image
-from boggle import GameRunner
 
 
 class Screen:
-    def __init__(self,runner, board):
+    def __init__(self, runner, board):
         self._init_graphics(board)
         self._board = board
         self._runner = runner

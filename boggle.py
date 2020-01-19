@@ -52,7 +52,6 @@ class GameRunner:
         pass
 
 
-
 if __name__ == "__main__":
     board = Board()
     runner = GameRunner()

@@ -30,7 +30,7 @@ class Board:
         :return: True if canceled, False if not
         """
         last_selected = self.__selected_indices[-1]
-        if (i,j) == last_selected:
+        if (i, j) == last_selected:
             letter = self.__board[last_selected[0]][last_selected[1]]
             self.__selected_indices.remove(self.__selected_indices[-1])
             self.__current_word = self.__current_word[0:-len(letter)]
@@ -86,7 +86,7 @@ class Board:
         try:  # checks position's range
             letter = self.__board[position[0]][position[1]]
         except IndexError:
-            return False # there is no such position in board
+            return False  # there is no such position in board
 
         # check proximity
         if self.check_valid_position(*position):
