@@ -14,6 +14,9 @@ class GameRunner:
         self.__correct_words = set()
         self.__wrong_words = set()
 
+    def set_screen(self, screen):
+        self.__screen = screen
+
     def run(self):
         """
         Start running the game with default settings.

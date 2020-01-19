@@ -9,6 +9,7 @@ class Screen:
         self._init_graphics(board)
         self._board = board
         self.runner = runner
+        self.runner.set_screen(self)
 
     def _init_graphics(self, board):
         self._root = Tk()
