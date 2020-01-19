@@ -43,15 +43,37 @@ class GameRunner:
         self.__score -= Cfg.Buy_time_price
         self.__remaining_time += Cfg.Buy_time_seconds
 
-    def add_letter(self, row, col):
-        self.__board.check_valid_position(row, col)
-
     def times_up(self):
         self.__timer.cancel()
         # screen - show end game message
 
     def start_play(self):
         pass
+
+    def add_word(self, word):
+        """
+        Check if the word is valid and add it to the fitting list
+        :param word: word to add
+        :return: Tuple (valid, msg)
+        """
+        if word not in self.__correct_words and word not in self.__wrong_words:
+            if self.check_valid_word(word):
+                self.__correct_words.add(word)
+                pts = Cfg.score_calc(word)
+                self.__score += pts
+                return True, "Yes! "+str(pts)+" Points!"
+            else:
+                self.__wrong_words.add(word)
+                return False, "Oops! Try again."
+        return None, "You already tried that."
+
+    @staticmethod
+    def check_valid_word(word):
+        """
+        Checks if a given word is valid
+        :return: boolean value
+        """
+        return word in Cfg.load_words()
 
 
 if __name__ == "__main__":

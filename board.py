@@ -7,7 +7,6 @@ class Board:
 
     def __init__(self):
         self.__board = self.shuffle_board()
-        self.__valid_words = Cfg.load_words()
         self.__current_word = str()
         self.__selected_indices = list()  # list of tuples [(1,2), (3,4),...]
 
@@ -19,23 +18,12 @@ class Board:
         """
         return randomize_board()
 
+    def reset_selection(self):
+        self.__current_word = str()
+        self.__selected_indices.clear()
+
     def get_selected_indices(self):
         return self.__selected_indices.copy()
-
-    def cancel_letter(self, i, j):
-        """
-        Cancels last selection by index, if index really was the last selection.
-        :param i: row
-        :param j: col
-        :return: True if canceled, False if not
-        """
-        last_selected = self.__selected_indices[-1]
-        if (i, j) == last_selected:
-            letter = self.__board[last_selected[0]][last_selected[1]]
-            self.__selected_indices.remove(self.__selected_indices[-1])
-            self.__current_word = self.__current_word[0:-len(letter)]
-            return True
-        return False
 
     def get_board(self):
         """
@@ -110,12 +98,6 @@ class Board:
             return True
         return False
 
-    def check_valid_word(self, word):
-        """
-        Checks if a given word is valid
-        :return: boolean value
-        """
-        return word in self.__valid_words
 
 
 

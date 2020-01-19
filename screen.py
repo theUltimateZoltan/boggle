@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.font import Font
 from PIL import ImageTk, Image
+from boggle_config import GameConfig as Cfg
 
 
 class Screen:
@@ -33,7 +34,10 @@ class Screen:
         # TODO - add icon
         self.__correct, self.__wrong = self._build_lists(right_sec)
 
+        # build message bar before board
+        self._msg_bar = self._build_message_bar(mid_sec)
         # build board at center
+        self._board_buttons = list()
         self.__boardframe = self._build_board(board, mid_sec)
         # word place under the board
         self.__wordplace = self._build_wordplace(mid_sec)
@@ -118,6 +122,21 @@ class Screen:
         else:
             self.__wrong["text"] += word+"\n"
 
+    def _build_message_bar(self, root):
+        """
+        Build the top message bar
+        :return: Label
+        """
+        fr = Frame(root, bg="#FFF")
+        font = Font(size=15, family="Segoe UI")
+        label = Label(fr, text=Cfg.welcome_message, width=28, height=2, bg="#1ABCB4", fg="#FFF", font=font)
+        label.pack_propagate(False)
+        label.pack(fill=X, pady=50)
+        fr.pack()
+        return label
+
+    def message(self, msg):
+        self._msg_bar["text"] = msg
 
     def _build_board(self, board, root):
         """
@@ -136,6 +155,7 @@ class Screen:
                 blueframe = Frame(rowframe, highlightbackground="#1ABCB4", highlightthickness=3)
                 button = Button(blueframe, text=matrix[i][j], **button_style)
                 button["command"] = lambda i=i, j=j, b=button: self._pressed_letter(i, j, b)
+                self._board_buttons.append(button)
                 button.pack()
                 blueframe.pack(side=LEFT, padx=2, pady=2)
             rowframe.pack()
@@ -190,7 +210,21 @@ class Screen:
         called when work is added
         :return: None
         """
-        pass
+        word = self._board.get_current_word()
+        valid, message = self.runner.add_word(word)
+
+        # reset board
+        self._board.reset_selection()
+        # graphically reset board
+        self.__wordplace["text"] = ""
+        for button in self._board_buttons:
+            button["fg"] = "#1ABCB4"
+            button["bg"] = "#FFF"
+
+        # add to the list
+        self.add_word(word, valid)
+
+        self.message(message)
 
     def clear_lists(self):
         """
