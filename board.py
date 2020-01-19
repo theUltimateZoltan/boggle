@@ -6,7 +6,7 @@ import math
 class Board:
 
     def __init__(self):
-        self.__board = [['A', 'C', 'F', 'B'], ['M', 'R', 'L', 'S'], ['W', 'R', 'S', 'T'], ['T', 'I', 'H', 'I']]
+        self.__board = self.shuffle_board()
         self.__valid_words = Cfg.load_words()
         self.__current_word = str()
         self.__selected_indices = list()  # list of tuples [(1,2), (3,4),...]
@@ -30,7 +30,7 @@ class Board:
         :return: True if canceled, False if not
         """
         last_selected = self.__selected_indices[-1]
-        if (i, j) == last_selected:
+        if (i,j) == last_selected:
             letter = self.__board[last_selected[0]][last_selected[1]]
             self.__selected_indices.remove(self.__selected_indices[-1])
             self.__current_word = self.__current_word[0:-len(letter)]
@@ -81,17 +81,19 @@ class Board:
         the indices list by the given letter position in board,
         only if letter is valid.
         :param position: index of a letter in board (row,col)
-        :return: None
+        :return: Boolean
         """
         try:  # checks position's range
             letter = self.__board[position[0]][position[1]]
         except IndexError:
-            return  # there is no such position in board
+            return False # there is no such position in board
 
         # check proximity
         if self.check_valid_position(*position):
             self.__current_word += letter
             self.__selected_indices.append(position)
+            return True
+        return False
 
     def check_valid_word(self, word):
         """
@@ -99,25 +101,6 @@ class Board:
         :return: boolean value
         """
         return word in self.__valid_words
-
-
-b1 = Board()
-print(b1.get_board())
-b1.add_letter((0, 0))
-b1.add_letter((3,3))
-print(b1.get_current_word())
-
-
-
-"""
-A C F B
-M R L S 
-W R S T
-T I H I
-
-
-"""
-
 
 
 
