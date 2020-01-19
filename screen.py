@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.font import Font
 
 # frames, widgets, button, canvas, entry, label, menu, text, scroll bar, Listbox
 
@@ -12,20 +13,60 @@ class Screen:
         self._root.title("Boggle Game!")
         self._root.config(bg="white")
         self._root.resizable(0, 0)  # don't allow resizing
-        # TODO - add icon
+        self._root.geometry("1100x700")
+        # bind all main sections
+        left_sec = Frame(self._root, width=250)
+        mid_sec = Frame(self._root, width=500)
+        right_sec = Frame(self._root, width=250)
+        left_sec.grid(row=1, column=1)
+        mid_sec.grid(row=1, column=2)
+        right_sec.grid(row=1, column=3)
 
-    def build_lists(self):
+        # TODO - add icon
+        self.__correct, self.__wrong = self._build_lists(right_sec)
+
+
+
+
+
+    def _build_lists(self, root):
         """
         Build graphics for correct\wrong lists initial state
-        :return: tuple (correct-list, wrong-list)
+        :return: Tuple (correct content, wrong content)
         """
-        correct = Text(self._root, height=530, width=120, fg="#1ABCB4", font="Segoe ui")
-        wrong = Text(self._root, height=530, width=120, bg="#FF6D6D", font="Segoe ui")
-        correct.pack()
-        wrong.pack()
-        correct_title = Text(correct, height=30, bg="#1ABCB4", font="Segoe ui", fg="#FFF")
-        wrong_title = Text(wrong, height=30, bg="#1ABCB4", font="Segoe ui", fg="#FFF")
+        # define fonts
+        c_font = Font(family="Segoe UI", size=14)
+        w_font = Font(family="Segoe UI", size=14)
+        c_title_font = Font(family="Segoe UI", size=18)
+        w_title_font = Font(family="Segoe UI", size=18)
+
+        correct = Frame(root, height="200")
+        wrong = Frame(root, height="200")
+        correct.pack(expand=False)
+        wrong.pack(expand=False)
+        correct_title = Text(correct, height=1, bg="#1ABCB4", font=c_title_font, fg="#FFF")
+        correct_title.insert(END, "Correct")
+        wrong_title = Text(wrong, height=1, bg="#FF6D6D", font=w_title_font, fg="#FFF")
+        wrong_title.insert(END, "Wrong")
         correct_title.pack(fill=X)
+        wrong_title.pack(fill=X)
+        correct_content = Text(correct, fg="#1ABCB4", font=c_font)
+        wrong_content = Text(wrong, fg="#FF6D6D", font=w_font)
+        correct_content.pack(fill=X)
+        wrong_content.pack(fill=X)
+        return correct_content, wrong_content
+
+    def add_word(self, word, correct):
+        """
+        add a word to the correct list
+        :param word: word to add
+        :param correct: is the word correct? True/False
+        :return: None
+        """
+        if correct:
+            self.__correct.insert(END, word+"\n")
+        else:
+            self.__wrong.insert(END, word + "\n")
 
     def start_screen(self):
         mainloop()
