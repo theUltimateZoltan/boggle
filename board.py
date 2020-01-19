@@ -97,7 +97,7 @@ class Board:
 
     def check_valid_word(self, word):
         """
-        Checks if a given word is valid
+        Checks if a given word is valid.
         :return: boolean value
         """
         return word in self.__valid_words
