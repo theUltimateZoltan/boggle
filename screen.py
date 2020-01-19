@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter.font import Font
-
-# frames, widgets, button, canvas, entry, label, menu, text, scroll bar, Listbox
+from PIL import ImageTk, Image
 
 
 class Screen:
@@ -15,6 +14,8 @@ class Screen:
         self._root.config(bg="white")
         self._root.resizable(0, 0)  # don't allow resizing
         self._root.geometry("1100x700")
+        # TODO - add icon
+
         # bind all main sections
         left_sec = Frame(self._root, width=300, height=300, bg="#FFF")
         mid_sec = Frame(self._root, width=500, height=700, bg="#FFF")
@@ -35,6 +36,46 @@ class Screen:
         self.__boardframe = self._build_board(board, mid_sec)
         # word place under the board
         self.__wordplace = self._build_wordplace(mid_sec)
+        self.build_left_frame(left_sec)
+
+    def build_left_frame(self, fr):
+        # divide left frame into 2 sub-frames
+        top_frame = Frame(fr, height=200, width=300, bg="white")
+        bottom_frame = Frame(fr, height=900, width=300, bg="white")
+        top_frame.pack_propagate(False)
+        bottom_frame.pack_propagate(False)
+        top_frame.pack(fill=Y)
+        bottom_frame.pack(fill=Y, side=BOTTOM)
+
+        # draw logo and statistics box
+        self.draw_logo(top_frame)
+        self.draw_stats_box(bottom_frame)
+
+    def draw_logo(self, fr):
+        load = Image.open("style/bog_logo.png")
+        render = ImageTk.PhotoImage(load)
+        img = Label(fr, image=render)
+        img.image = render
+        img.place(x=0, y=0)
+
+    def draw_stats_box(self, fr):
+        font = Font(family="Segoe UI", size=12)
+        title_font = Font(family="Segoe UI", size=14)
+
+        box = Frame(fr, height=230, width=230, bg="white", highlightthickness=1, highlightbackground="#000")
+        box.pack_propagate(False)
+        box.pack()
+        box_title = Label(box, bg="#1ABCB4", font=title_font, fg="#FFF", text="Time")
+        box_title.pack(fill=X)
+
+        # add start button
+        restart_btn = Button(box, text="Start", bg="#1ABCB4", font=font, fg="white", width=7, activebackground="white")
+        restart_btn.pack(side=BOTTOM, pady=15)
+
+        self.draw_time_and_score(box)
+
+    def draw_time_and_score(self, fr):
+        pass
 
     def _build_lists(self, root):
         """
@@ -45,8 +86,8 @@ class Screen:
         font = Font(family="Segoe UI", size=16)
         title_font = Font(family="Segoe UI", size=18)
 
-        correct = Frame(root, height=250, width=230, highlightthickness=1, highlightbackground="#000", bg="#FFF")
-        wrong = Frame(root, height=250, width=230, highlightthickness=1, highlightbackground="#000", bg="#FFF")
+        correct = Frame(root, height=250, width=230, highlightthickness=1, highlightbackground="#000", bg="white")
+        wrong = Frame(root, height=250, width=230, highlightthickness=1, highlightbackground="#000", bg="white")
         correct.pack_propagate(False)
         wrong.pack_propagate(False)
         correct.pack(pady=50)
@@ -57,8 +98,8 @@ class Screen:
         correct_title.pack(fill=X)
         wrong_title.pack(fill=X)
 
-        correct_content = Label(correct, fg="#1ABCB4", font=font, bg="#FFF")
-        wrong_content = Label(wrong, fg="#FF6D6D", font=font, bg="#FFF")
+        correct_content = Label(correct, fg="#1ABCB4", font=font, bg="white")
+        wrong_content = Label(wrong, fg="#FF6D6D", font=font, bg="white")
         correct_content.pack(fill=X)
         wrong_content.pack(fill=X)
 

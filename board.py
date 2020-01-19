@@ -6,7 +6,7 @@ import math
 class Board:
 
     def __init__(self):
-        self.__board = self.shuffle_board()
+        self.__board = [['A', 'C', 'F', 'B'], ['M', 'R', 'L', 'S'], ['W', 'R', 'S', 'T'], ['T', 'I', 'H', 'I']]
         self.__valid_words = Cfg.load_words()
         self.__current_word = str()
         self.__selected_indices = list()  # list of tuples [(1,2), (3,4),...]
@@ -81,6 +81,27 @@ class Board:
         :return: boolean value
         """
         return word in self.__valid_words
+
+
+b1 = Board()
+print(b1.get_board())
+b1.add_letter((0, 0))
+b1.add_letter((3,3))
+print(b1.get_current_word())
+
+
+
+"""
+A C F B
+M R L S 
+W R S T
+T I H I
+
+
+"""
+
+
+
 
 
 

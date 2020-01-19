@@ -71,6 +71,9 @@ class GameRunner:
         self.__timer.cancel()
         # screen - show end game message
 
+    def start_play(self):
+        pass
+
 
 if __name__ == "__main__":
     runner = GameRunner()
