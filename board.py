@@ -6,7 +6,7 @@ import math
 class Board:
 
     def __init__(self):
-        self.__board = [['A', 'H', 'P', 'O'], ['I', 'V', 'D', 'S'], ['G', 'H', 'D', 'T'], ['Y', 'E', 'H', 'N']]
+        self.__board = self.shuffle_board()
         self.__valid_words = Cfg.load_words()
         self.__current_word = str()
         self.__selected_indices = list()  # list of tuples [(1,2), (3,4),...]
@@ -84,22 +84,6 @@ class Board:
 
     def get_indices(self):
         return self.__selected_indices
-
-
-b = Board()
-print(b.get_board())
-b.add_letter((-23, 0))
-print("Combination :", b.get_current_word(), "\nIndexes: ", b.get_indices())
-b.add_letter((0, 1))
-print("Combination :", b.get_current_word(), "\nIndexes: ", b.get_indices())
-b.add_letter((0, 2))
-print("Combination :", b.get_current_word(), "\nIndexes: ", b.get_indices())
-b.add_letter((0, 3))
-print("Combination :", b.get_current_word(), "\nIndexes: ", b.get_indices())
-b.add_letter((0, 0))
-print("Combination :", b.get_current_word(), "\nIndexes: ", b.get_indices())
-b.add_letter((0, 0))
-print("Combination :", b.get_current_word(), "\nIndexes: ", b.get_indices())
 
 
 
