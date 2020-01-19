@@ -11,11 +11,12 @@ class GameConfig:
         with open(file) as f:
             words = {line.strip() for line in f}
         return words
-    Buy_time_price = 10
-    Buy_time_seconds = 10
 
-    game_time = 180  # seconds
-
-    def score_calc(self, word):
+    @staticmethod
+    def score_calc(word):
         length = len(word)
         return length ** 2
+
+    Buy_time_price = 10
+    Buy_time_seconds = 10
+    game_time = 180  # seconds

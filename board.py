@@ -82,8 +82,8 @@ class Board:
         """
         return word in self.__valid_words
 
-    def get_indices(self):
-        return self.__selected_indices
+
+
 
 
 

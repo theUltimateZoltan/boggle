@@ -42,7 +42,7 @@ class GameRunner:
         """
         Check if the word is valid.
         if valid and not yet marked, add as correct.
-        if invalid and not yet marked - ad ass wrong.
+        if invalid and not yet marked - add as wrong.
         if already marked - display informative message.
         :param word: The word to check and add
         :return: None
@@ -50,7 +50,7 @@ class GameRunner:
         if word in self.__correct_words or word in self.__wrong_words:
             # screen - display informative message.
             return
-        if self.__board.check_valid_word():
+        if self.__board.check_valid_word(word):
             self.__correct_words.add(word)
             self.add_score(Cfg.score_calc(word))
         else:
