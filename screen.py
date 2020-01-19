@@ -15,19 +15,26 @@ class Screen:
         self._root.resizable(0, 0)  # don't allow resizing
         self._root.geometry("1100x700")
         # bind all main sections
-        left_sec = Frame(self._root, width=250)
-        mid_sec = Frame(self._root, width=500)
-        right_sec = Frame(self._root, width=250)
-        left_sec.grid(row=1, column=1)
-        mid_sec.grid(row=1, column=2)
-        right_sec.grid(row=1, column=3)
+        left_sec = Frame(self._root, width=250, height=300)
+        mid_sec = Frame(self._root, width=500, height=700)
+        right_sec = Frame(self._root, width=250, height=700)
+
+        right_sec.pack_propagate(False)
+        mid_sec.pack_propagate(False)
+        left_sec.pack_propagate(False)
+
+        left_sec.pack(fill=Y, side=LEFT)
+        mid_sec.pack(fill=Y, side=LEFT, padx=50)
+        right_sec.pack(fill=Y, side=LEFT)
 
         # TODO - add icon
         self.__correct, self.__wrong = self._build_lists(right_sec)
 
+        b = Button(left_sec, text="try")
+        b.pack()
 
-
-
+        c = Button(mid_sec,text="mid")
+        c.pack()
 
     def _build_lists(self, root):
         """
@@ -35,23 +42,19 @@ class Screen:
         :return: Tuple (correct content, wrong content)
         """
         # define fonts
-        c_font = Font(family="Segoe UI", size=14)
-        w_font = Font(family="Segoe UI", size=14)
-        c_title_font = Font(family="Segoe UI", size=18)
-        w_title_font = Font(family="Segoe UI", size=18)
+        font = Font(family="Segoe UI", size=14)
+        title_font = Font(family="Segoe UI", size=18)
 
-        correct = Frame(root, height="200")
-        wrong = Frame(root, height="200")
-        correct.pack(expand=False)
-        wrong.pack(expand=False)
-        correct_title = Text(correct, height=1, bg="#1ABCB4", font=c_title_font, fg="#FFF")
-        correct_title.insert(END, "Correct")
-        wrong_title = Text(wrong, height=1, bg="#FF6D6D", font=w_title_font, fg="#FFF")
-        wrong_title.insert(END, "Wrong")
+        correct = Frame(root, height=500)
+        wrong = Frame(root, height=500)
+        correct.pack(fill=X)
+        wrong.pack(fill=X)
+        correct_title = Label(correct, bg="#1ABCB4", font=title_font, fg="#FFF", text="Correct")
+        wrong_title = Label(wrong, bg="#FF6D6D", font=title_font, fg="#FFF", text="Wrong")
         correct_title.pack(fill=X)
         wrong_title.pack(fill=X)
-        correct_content = Text(correct, fg="#1ABCB4", font=c_font)
-        wrong_content = Text(wrong, fg="#FF6D6D", font=w_font)
+        correct_content = Label(correct, fg="#1ABCB4", font=font)
+        wrong_content = Label(wrong, fg="#FF6D6D", font=font)
         correct_content.pack(fill=X)
         wrong_content.pack(fill=X)
         return correct_content, wrong_content
@@ -64,9 +67,9 @@ class Screen:
         :return: None
         """
         if correct:
-            self.__correct.insert(END, word+"\n")
+            self.__correct["text"] += word+"\n"
         else:
-            self.__wrong.insert(END, word + "\n")
+            self.__wrong["text"] += word+"\n"
 
     def start_screen(self):
         mainloop()
