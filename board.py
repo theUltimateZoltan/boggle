@@ -50,10 +50,10 @@ class Board:
             return False
 
         # stores the last selected letter's index
-        i, j = self.__selected_indices[-1][0], self.__selected_indices[-1][0]
+        i, j = self.__selected_indices[-1][0], self.__selected_indices[-1][1]
 
         # checks if current letter position is adjacent to last one
-        if math.fabs(row - i) <= 1 or math.fabs(col - j) <= 1:
+        if math.fabs(row - i) <= 1 and math.fabs(col - j) <= 1:
             return True
         return False
 

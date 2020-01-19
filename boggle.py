@@ -8,8 +8,8 @@ import sys
 
 class GameRunner:
     def __init__(self):
-        self.__screen = Screen()
         self.__board = Board()
+        self.__screen = Screen(self.__board)
         self.__score = 0
         self.__timer = Timer(1.0, self.every_second)
         self.__remaining_time = Cfg.game_time
@@ -64,8 +64,8 @@ class GameRunner:
         self.__score -= Cfg.Buy_time_price
         self.__remaining_time += Cfg.Buy_time_seconds
 
-    def add_letter(self):
-        pass
+    def add_letter(self, row, col):
+        self.__board.check_valid_position(row, col)
 
     def times_up(self):
         self.__timer.cancel()
