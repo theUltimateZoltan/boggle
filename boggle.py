@@ -11,18 +11,22 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__util = Utilities(self)
         self.__board = self.__util.get_board()
         self.__root = Tk()
+        self._stats_box = None
         self.__time = [None, Cfg.GAME_TIME]
         self.__score = None
+        self.__start_btn = None
         self.init_graphics(self.__util.get_board())
 
     def init_graphics(self, board):
         self.__root.title("Boggle Game!")
         self.__root.config(bg="white")
-        self.__root.resizable(0, 0)  # don't allow resizing
+        self.__root.resizable(0, 0)
         self.__root.geometry("1100x700")
         self.__root.iconbitmap("style/game_ico.ico")
+        self.build_main_frames(board)
 
-        # bind all main sections
+    def build_main_frames(self, board):
+
         left_sec = Frame(self.__root, width=300, height=300, bg="#FFF")
         mid_sec = Frame(self.__root, width=500, height=700, bg="#FFF")
         right_sec = Frame(self.__root, width=300, height=700, bg="#FFF")
@@ -36,7 +40,6 @@ class BoggleApp:  # Runner and Graphics Unit
         right_sec.pack(fill=Y, side=LEFT)
 
         self.__correct, self.__wrong = self._build_lists(right_sec)
-
         # build message bar before board
         self._msg_bar = self._build_message_bar(mid_sec)
         # build board at center
@@ -44,7 +47,6 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__boardframe = self._build_board(board, mid_sec)
         # word place under the board
         self.__wordplace = self._build_wordplace(mid_sec)
-
         # time and score labels
         self.build_left_frame(left_sec)
 
@@ -73,30 +75,30 @@ class BoggleApp:  # Runner and Graphics Unit
         title_font = Font(family="Segoe UI", size=14)
 
         # draw stats box
-        box = Frame(fr, height=230, width=230, bg="white",
+        self._stats_box = Frame(fr, height=230, width=230, bg="white",
                     highlightthickness=1, highlightbackground="#000")
-        box.pack_propagate(False)
-        box.pack()
-        box_title = Label(box, bg="#1ABCB4", font=title_font, fg="#FFF",
+        self._stats_box.pack_propagate(False)
+        self._stats_box.pack()
+        box_title = Label(self._stats_box, bg="#1ABCB4", font=title_font, fg="#FFF",
                           text="Time              Score")
         box_title.pack(fill=X)
 
-        self.add_start_button(box)
+        self.add_start_button(self._stats_box)
 
         # draw time and score
-        self.draw_time(box), self.draw_score(box)
+        self.draw_time(self._stats_box), self.draw_score(self._stats_box)
 
     def add_start_button(self, fr):
         font = Font(family="Segoe UI", size=12)
 
-        start_btn = Button(fr, text="Start", bg="#1ABCB4", font=font,
+        self.__start_btn = Button(fr, text="Start", bg="#1ABCB4", font=font,
                              fg="white", width=7, activebackground="white",
                            command=self.start_play)
-        start_btn.pack(side=BOTTOM, pady=12)
+        self.__start_btn.pack(side=BOTTOM, pady=12)
 
-    def start_play(self):
-        self.time_on()
-        # change start button to restart button
+    def add_restart_button(self):
+        self.__start_btn["text"] = "Restart"
+        self.__start_btn["command"] = self.restart_game
 
     def draw_time(self, fr):
         font = Font(family="Segoe UI", size=20)
@@ -316,6 +318,15 @@ class BoggleApp:  # Runner and Graphics Unit
         """
         self.__correct["text"] = ""
         self.__wrong["text"] = ""
+
+    def start_play(self):
+        self.time_on()
+        self.add_restart_button()
+
+    def restart_game(self):
+        self.__util.reset()
+        self.__time[1] = Cfg.GAME_TIME
+        self.start_play()
 
     def run(self):
         self.__root.mainloop()
