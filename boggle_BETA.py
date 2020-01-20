@@ -1,29 +1,31 @@
 from tkinter import *
 from tkinter.font import Font
+from board import Board
 from PIL import ImageTk, Image
 from boggle_config import GameConfig as Cfg
 
+class BoggleApp:  # Runner and Graphics Unit
 
-class Screen:
-    def __init__(self, runner, board):
+    def __init__(self):
+        self.__util = Utilities(self)
+        self.__board = self.__util.get_board()
         self.__root = Tk()
-        self.__board = board
-        self.__runner = runner
-        self.__runner.set_screen(self)
-        self.__countdown = 180
-        self._init_graphics(self.__root, board)
+        self.__timeleft = 180
+        self.init_graphics(self.__util.get_board())
 
-    def _init_graphics(self, root, board):
-        root.title("Boggle Game!")
-        root.config(bg="white")
-        root.resizable(0, 0)  # don't allow resizing
-        root.geometry("1100x700")
-        root.iconbitmap("style/game_ico.ico")
+
+
+    def init_graphics(self, board):
+        self.__root.title("Boggle Game!")
+        self.__root.config(bg="white")
+        self.__root.resizable(0, 0)  # don't allow resizing
+        self.__root.geometry("1100x700")
+        self.__root.iconbitmap("style/game_ico.ico")
 
         # bind all main sections
-        left_sec = Frame(root, width=300, height=300, bg="#FFF")
-        mid_sec = Frame(root, width=500, height=700, bg="#FFF")
-        right_sec = Frame(root, width=300, height=700, bg="#FFF")
+        left_sec = Frame(self.__root, width=300, height=300, bg="#FFF")
+        mid_sec = Frame(self.__root, width=500, height=700, bg="#FFF")
+        right_sec = Frame(self.__root, width=300, height=700, bg="#FFF")
 
         right_sec.pack_propagate(False)
         mid_sec.pack_propagate(False)
@@ -82,7 +84,7 @@ class Screen:
         # add start button
         start_btn = Button(box, text="Start", bg="#1ABCB4", font=font,
                              fg="white", width=7, activebackground="white",
-                           command=self.start_play())
+                           command=self.start_play)
         start_btn.pack(side=BOTTOM, pady=12)
 
         # draw time and score
@@ -145,9 +147,16 @@ class Screen:
         self.__score["text"] = str(score)
 
     def time_on(self):
-        self.__time["text"] = self.__countdown
-        self.__countdown -= 1
-        self.__root.after(1000, self.time_on())
+        if not self.__timeleft:
+            self.__util.times_up()
+            return
+        self.__timeleft -= 1
+
+        # build text in minute format
+        minutes = self.__timeleft // 60
+        seconds = self.__timeleft % 60
+        self.__time["text"] = str(minutes) + ":" + str(seconds)
+        self.__root.after(1000, self.time_on)
 
     def _build_lists(self, root):
         """
@@ -278,7 +287,7 @@ class Screen:
         :return: None
         """
         word = self.__board.get_current_word()
-        valid, message = self.__runner.add_word(word)
+        valid, message = self.__util.add_word(word)
 
         # reset board
         self.__board.reset_selection()
@@ -301,12 +310,70 @@ class Screen:
         self.__correct["text"] = ""
         self.__wrong["text"] = ""
 
-    def start_screen(self):
-        mainloop()
+    def run(self):
+        self.__root.mainloop()
 
-    def end_game(self):
+"""
+Logic Unit
+"""
+
+class Utilities:  # Logic Unit
+    def __init__(self, app):
+        self.__app = app
+        self.__board = Board()
+        self.__score = 0
+        self.__time = 180
+        self.__correct_words = set()
+        self.__wrong_words = set()
+
+    def start_play(self):
+        pass
+
+    def get_board(self):
+        return self.__board
+
+    def reset(self):
+        pass
+
+    def add_score(self, score):
+        # screen - print "well done" message
+        self.__score += score
+        print(self.__score)
+
+    def buy_time(self):
+        self.__score -= Cfg.Buy_time_price
+        """self.__remaining_time += Cfg.Buy_time_seconds"""
+
+    def times_up(self):
+        pass
+
+    def add_word(self, word):
         """
-        This ends the current game.
+        Check if the word is valid and add it to the fitting list
+        :param word: word to add
+        :return: Tuple (valid, msg)
         """
-        self.__root.destroy()
-        self.__root.quit()
+        if word not in self.__correct_words and word not in self.__wrong_words:
+            if self.check_valid_word(word):
+                self.__correct_words.add(word)
+                pts = Cfg.score_calc(word)
+                self.__score += pts
+                self.__app.update_score(self.__score)
+                return True, "Yes! "+str(pts)+" Points!"
+            else:
+                self.__wrong_words.add(word)
+                return False, "Oops! Try again."
+        return None, "You already tried that."
+
+    @staticmethod
+    def check_valid_word(word):
+        """
+        Checks if a given word is valid
+        :return: boolean value
+        """
+        return word in Cfg.load_words()
+
+
+if __name__ == '__main__':
+    my_app = BoggleApp()
+    my_app.run()

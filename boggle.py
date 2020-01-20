@@ -3,7 +3,6 @@ from board import Board
 from screen import Screen
 from boggle_config import GameConfig as Cfg
 from threading import Timer
-import sys
 
 
 class GameRunner:
@@ -22,12 +21,12 @@ class GameRunner:
         Start running the game with default settings.
         :return: None
         """
-        self.__screen.start_screen()
         self.__timer.start()
 
     def every_second(self):
         self.__remaining_time -= 1
-        # screen - change timer printed
+        self.__screen.update_time(self.__remaining_time)
+        print(self.__remaining_time)
         if self.__remaining_time <= 0:
             self.times_up()
 
@@ -40,6 +39,7 @@ class GameRunner:
     def add_score(self, score):
         # screen - print "well done" message
         self.__score += score
+        print(self.__score)
 
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
@@ -63,6 +63,7 @@ class GameRunner:
                 self.__correct_words.add(word)
                 pts = Cfg.score_calc(word)
                 self.__score += pts
+                self.__screen.update_score(self.__score)
                 return True, "Yes! "+str(pts)+" Points!"
             else:
                 self.__wrong_words.add(word)
@@ -83,3 +84,4 @@ if __name__ == "__main__":
     board = Board()
     screen = Screen(runner, board)
     screen.start_screen()
+
