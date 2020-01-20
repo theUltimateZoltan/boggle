@@ -7,7 +7,6 @@ class Utilities:
         self.__app = app
         self.__board = Board()
         self.__score = 0
-        self.__time = 180
         self.__correct_words = set()
         self.__wrong_words = set()
 
@@ -18,12 +17,13 @@ class Utilities:
         return self.__board
 
     def reset(self):
-        pass
+        self.__board.shuffle_board()
+        self.__score = 0
+        self.__correct_words.clear()
+        self.__correct_words.clear()
 
     def add_score(self, score):
-        # screen - print "well done" message
         self.__score += score
-        print(self.__score)
 
     def buy_time(self):
         self.__score -= Cfg.Buy_time_price
