@@ -43,7 +43,7 @@ class BoggleApp:  # Runner and Graphics Unit
         self._board_buttons = list()
         self.__boardframe = self._build_board(board, mid_sec)
         # word place under the board
-        self.__wordplace = self._build_wordplace(mid_sec)
+        self.__wordplace, self.__add_word_button = self._build_wordplace(mid_sec)
 
         # time and score labels
         self.build_left_frame(left_sec)
@@ -221,14 +221,24 @@ class BoggleApp:  # Runner and Graphics Unit
     def message(self, msg):
         self._msg_bar["text"] = msg
 
+    def activate_board_and_addword(self):
+        """
+        activate the buttons we disabled when initialising
+        :return: None
+        """
+        for button in self._board_buttons:
+            button["bg"] = "#FFF"
+            button["state"] = NORMAL
+        self.__add_word_button["state"] = NORMAL
+
     def _build_board(self, board, root):
         """
         Build the board of the game using a board object
         :return: Frame
         """
         b_font = Font(family="Segoe UI", size=23)
-        button_style = {"bg": "#FFF", "fg": "#1ABCB4", "width": 4, "height": 1, "font": b_font,
-                        "borderwidth": "0"}
+        button_style = {"bg": "#1ABCB4", "fg": "#1ABCB4", "width": 4, "height": 1, "font": b_font,
+                        "borderwidth": "0", "disabledforeground": "#1ABCB4" }
 
         matrix = board.get_board()
         fr = Frame(root)
@@ -237,6 +247,10 @@ class BoggleApp:  # Runner and Graphics Unit
             for j in range(len(matrix[0])):
                 blueframe = Frame(rowframe, highlightbackground="#1ABCB4", highlightthickness=3)
                 button = Button(blueframe, text=matrix[i][j], **button_style)
+
+                # disable buttons untill time starts
+                button["state"] = DISABLED
+
                 button["command"] = lambda i=i, j=j, b=button: self._pressed_letter(i, j, b)
                 self._board_buttons.append(button)
                 button.pack()
@@ -282,11 +296,12 @@ class BoggleApp:  # Runner and Graphics Unit
         blueframe=Frame(fr, highlightbackground="#1ABCB4", highlightthickness=3)
         add_word_button = Button(blueframe, text="+", bg="#FFF", fg="#1ABCB4",font=b_font, borderwidth=0, width=2)
         add_word_button["command"] = self._add_word_pressed
+        add_word_button["state"] = DISABLED
         add_word_button.pack()
         blueframe.pack(side=RIGHT)
 
         fr.pack(pady=20)
-        return label
+        return label, add_word_button
 
     def _add_word_pressed(self):
         """
@@ -300,6 +315,7 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__board.reset_selection()
         # graphically reset board
         self.__wordplace["text"] = ""
+
         for button in self._board_buttons:
             button["fg"] = "#1ABCB4"
             button["bg"] = "#FFF"
