@@ -158,7 +158,7 @@ class BoggleApp:  # Runner and Graphics Unit
         seconds = str(sec) if sec >= 10 else "0"+str(sec)
 
         time_lbl["text"] = "{0}:{1}".format(minutes, seconds)
-        self.__root.after(200, self.time_on)
+        self.__root.after(1000, self.time_on)
 
     def _build_lists(self, root):
         """
