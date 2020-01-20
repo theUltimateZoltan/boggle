@@ -29,6 +29,11 @@ class Utilities:
         self.__score -= Cfg.Buy_time_price
         """self.__remaining_time += Cfg.Buy_time_seconds"""
 
+    def get_correct_words_list(self):
+        return self.__correct_words
+
+    def get_wrong_words_list(self):
+        return self.__wrong_words
 
     def add_word(self, word):
         """
@@ -36,6 +41,8 @@ class Utilities:
         :param word: word to add
         :return: Tuple (valid, msg)
         """
+        if len(word) < 2:
+            return False, "Please choose at least two letters."
         if word not in self.__correct_words and word not in self.__wrong_words:
             if self.check_valid_word(word):
                 self.__correct_words.add(word)

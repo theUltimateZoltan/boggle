@@ -15,8 +15,18 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__time = [None, Cfg.GAME_TIME]
         self.__score = None
         self.__start_btn = None
-        self.init_graphics(self.__util.get_board())
         self.__timer = None
+        self.__correct = None
+        self.__wrong = None
+        self._msg_bar = None
+        # build board at center
+        self._board_buttons = dict()
+        self.__boardframe = None
+        # word place under the board
+        self.__wordplace = None
+        self.__add_word_button = None
+
+        self.init_graphics(self.__util.get_board())
 
     def init_graphics(self, board):
         self.__root.title("Boggle Game!")
@@ -26,7 +36,6 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__root.iconbitmap("style/game_ico.ico")
         self.build_main_frames(board)
 
-    #TODO initialize attributes from __init__
     def build_main_frames(self, board):
 
         left_sec = Frame(self.__root, width=300, height=300, bg="#FFF")
@@ -45,7 +54,6 @@ class BoggleApp:  # Runner and Graphics Unit
         # build message bar before board
         self._msg_bar = self._build_message_bar(mid_sec)
         # build board at center
-        self._board_buttons = dict()
         self.__boardframe = self._build_board(board, mid_sec)
         # word place under the board
         self.__wordplace, self.__add_word_button = self._build_wordplace(mid_sec)
@@ -331,16 +339,12 @@ class BoggleApp:  # Runner and Graphics Unit
 
         # reset board
         self.__board.reset_selection()
-        # graphically reset board
-        self.__wordplace["text"] = ""
 
         for button in self._board_buttons.values():
             button["fg"] = "#1ABCB4"
             button["bg"] = "#FFF"
 
-        # add to the list
-        self.add_word(word, valid)
-
+        self.refresh()
         self.message(message)
 
     def clear_lists(self):
@@ -362,7 +366,11 @@ class BoggleApp:  # Runner and Graphics Unit
             matrix = self.__board.get_board()
             self._board_buttons[coordinate]["text"] = matrix[coordinate[0]][coordinate[1]]
         self.__score["text"] = self.__util.get_score()
-
+        self.clear_lists()
+        for item in self.__util.get_correct_words_list():
+            self.add_word(item, True)
+        for item in self.__util.get_wrong_words_list():
+            self.add_word(item, False)
 
     def restart_game(self):
         self.__util.reset()
@@ -373,6 +381,7 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__board.clear_current_word()
         self.start_play()
         self.activate_board_and_addword()
+        self.clear_lists()
         self.message("Better luck this time!")
         self.refresh()
 
