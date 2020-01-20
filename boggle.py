@@ -16,6 +16,7 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__score = None
         self.__start_btn = None
         self.init_graphics(self.__util.get_board())
+        self.__timer = None
 
     def init_graphics(self, board):
         self.__root.title("Boggle Game!")
@@ -25,6 +26,7 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__root.iconbitmap("style/game_ico.ico")
         self.build_main_frames(board)
 
+    #TODO initialize attributes from __init__
     def build_main_frames(self, board):
 
         left_sec = Frame(self.__root, width=300, height=300, bg="#FFF")
@@ -43,7 +45,7 @@ class BoggleApp:  # Runner and Graphics Unit
         # build message bar before board
         self._msg_bar = self._build_message_bar(mid_sec)
         # build board at center
-        self._board_buttons = list()
+        self._board_buttons = dict()
         self.__boardframe = self._build_board(board, mid_sec)
         # word place under the board
         self.__wordplace, self.__add_word_button = self._build_wordplace(mid_sec)
@@ -101,6 +103,7 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__start_btn["text"] = "Restart"
         self.__start_btn["command"] = self.restart_game
 
+
     def draw_time(self, fr):
         font = Font(family="Segoe UI", size=20)
 
@@ -149,13 +152,10 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__score = Label(scr_lbl, text="0", font=font, bg="white", fg="black")
         self.__score.pack()
 
-    def update_score(self, score):
-        self.__score["text"] = str(score)
-
     def time_on(self):
         time_lbl, time_left = self.__time[0], self.__time[1]
         if not time_left:
-            self.__util.times_up()
+            self.times_up()
             return
 
         self.__time[1] -= 1
@@ -166,7 +166,7 @@ class BoggleApp:  # Runner and Graphics Unit
         seconds = str(sec) if sec >= 10 else "0"+str(sec)
 
         time_lbl["text"] = "{0}:{1}".format(minutes, seconds)
-        self.__root.after(1000, self.time_on)
+        self.__timer = self.__root.after(1000, self.time_on)
 
     def _build_lists(self, root):
         """
@@ -229,10 +229,17 @@ class BoggleApp:  # Runner and Graphics Unit
         activate the buttons we disabled when initialising
         :return: None
         """
-        for button in self._board_buttons:
+        for button in self._board_buttons.values():
             button["bg"] = "#FFF"
+            button["fg"] = "#1ABCB4"
             button["state"] = NORMAL
         self.__add_word_button["state"] = NORMAL
+
+    def deactivate_board_and_addword(self):
+        for button in self._board_buttons:
+            button["bg"] = "#1ABCB4"
+            button["state"] = DISABLED
+        self.__add_word_button["state"] = DISABLED
 
     def _build_board(self, board, root):
         """
@@ -255,12 +262,20 @@ class BoggleApp:  # Runner and Graphics Unit
                 button["state"] = DISABLED
 
                 button["command"] = lambda i=i, j=j, b=button: self._pressed_letter(i, j, b)
-                self._board_buttons.append(button)
+                self._board_buttons[(i, j)] = button
                 button.pack()
                 blueframe.pack(side=LEFT, padx=2, pady=2)
             rowframe.pack()
         fr.pack()
         return fr
+
+    def _shuffle_board(self):
+        """
+        shuffle the main board
+        :return: None
+        """
+        self.__board.shuffle_board()
+        self.refresh()
 
     def _pressed_letter(self, i, j, button):
         """
@@ -278,7 +293,7 @@ class BoggleApp:  # Runner and Graphics Unit
             button["bg"] = "#1ABCB4"
             button["fg"] = "#FFF"
 
-        self.__wordplace["text"] = self.__board.get_current_word()
+        self.refresh()
 
     def _build_wordplace(self, root):
         """
@@ -319,7 +334,7 @@ class BoggleApp:  # Runner and Graphics Unit
         # graphically reset board
         self.__wordplace["text"] = ""
 
-        for button in self._board_buttons:
+        for button in self._board_buttons.values():
             button["fg"] = "#1ABCB4"
             button["bg"] = "#FFF"
 
@@ -339,15 +354,39 @@ class BoggleApp:  # Runner and Graphics Unit
     def start_play(self):
         self.time_on()
         self.add_restart_button()
+        self.activate_board_and_addword()
+
+    def refresh(self):
+        self.__wordplace["text"] = self.__board.get_current_word()
+        for coordinate in self._board_buttons.keys():
+            matrix = self.__board.get_board()
+            self._board_buttons[coordinate]["text"] = matrix[coordinate[0]][coordinate[1]]
+        self.__score["text"] = self.__util.get_score()
+
 
     def restart_game(self):
         self.__util.reset()
         self.__time[1] = Cfg.GAME_TIME
+        self.__root.after_cancel(self.__timer)
+        self._shuffle_board()
+        self.__board.reset_selection()
+        self.__board.clear_current_word()
         self.start_play()
+        self.activate_board_and_addword()
+        self.message("Better luck this time!")
+        self.refresh()
 
     def run(self):
         self.__root.mainloop()
 
+    def times_up(self):
+        """
+        Ends the game neatly and informs user
+        asks if wants to play again, and gives the option through reset button.
+        :return: None
+        """
+        self.message("Time's up! reset to try again.")
+        self.deactivate_board_and_addword()
 
 if __name__ == '__main__':
     my_app = BoggleApp()

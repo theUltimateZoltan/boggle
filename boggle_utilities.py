@@ -10,11 +10,11 @@ class Utilities:
         self.__correct_words = set()
         self.__wrong_words = set()
 
-    def start_play(self):
-        pass
-
     def get_board(self):
         return self.__board
+
+    def get_score(self):
+        return self.__score
 
     def reset(self):
         self.__board.shuffle_board()
@@ -29,8 +29,6 @@ class Utilities:
         self.__score -= Cfg.Buy_time_price
         """self.__remaining_time += Cfg.Buy_time_seconds"""
 
-    def times_up(self):
-        pass
 
     def add_word(self, word):
         """
@@ -43,7 +41,7 @@ class Utilities:
                 self.__correct_words.add(word)
                 pts = Cfg.score_calc(word)
                 self.__score += pts
-                self.__app.update_score(self.__score)
+                self.__app.refresh()
                 return True, "Yes! "+str(pts)+" Points!"
             else:
                 self.__wrong_words.add(word)

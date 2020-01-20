@@ -6,18 +6,18 @@ import math
 class Board:
 
     def __init__(self):
-        self.__board = self.shuffle_board()
+        self.__board = None
+        self.shuffle_board()
         self.__valid_words = Cfg.load_words()
         self.__current_word = str()
         self.__selected_indices = list()  # list of tuples [(1,2), (3,4),...]
 
-    @staticmethod
-    def shuffle_board():
+    def shuffle_board(self):
         """
-        Returns randomized board
-        :return: 2D list of letters
+        Randomizes board
+        :return:
         """
-        return randomize_board()
+        self.__board = randomize_board()
 
     def reset_selection(self):
         self.__current_word = str()
