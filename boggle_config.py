@@ -17,8 +17,9 @@ class GameConfig:
         length = len(word)
         return length ** 2
 
-    Buy_time_price = 10
-    Buy_time_seconds = 10
+    TIME_PRICE = 10
+    EXTRA_SECONDS = 30
     GAME_TIME = 180  # seconds
-    welcome_message = "Welcome to Boggle! :)"
+    SCORE_BASE = 0
+    WELCOME_MSG = "Welcome to Boggle! :)"
 
