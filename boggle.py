@@ -81,17 +81,22 @@ class BoggleApp:  # Runner and Graphics Unit
                           text="Time              Score")
         box_title.pack(fill=X)
 
-        # add start button
-        start_btn = Button(box, text="Start", bg="#1ABCB4", font=font,
-                             fg="white", width=7, activebackground="white",
-                           command=self.start_play)
-        start_btn.pack(side=BOTTOM, pady=12)
+        self.add_start_button(box)
 
         # draw time and score
         self.draw_time(box), self.draw_score(box)
 
+    def add_start_button(self, fr):
+        font = Font(family="Segoe UI", size=12)
+
+        start_btn = Button(fr, text="Start", bg="#1ABCB4", font=font,
+                             fg="white", width=7, activebackground="white",
+                           command=self.start_play)
+        start_btn.pack(side=BOTTOM, pady=12)
+
     def start_play(self):
         self.time_on()
+        # change start button to restart button
 
     def draw_time(self, fr):
         font = Font(family="Segoe UI", size=20)
