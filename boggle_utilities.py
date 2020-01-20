@@ -20,7 +20,7 @@ class Utilities:
         self.__board.shuffle_board()
         self.__score = 0
         self.__correct_words.clear()
-        self.__correct_words.clear()
+        self.__wrong_words.clear()
 
     def add_score(self, score):
         self.__score += score

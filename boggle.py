@@ -111,7 +111,6 @@ class BoggleApp:  # Runner and Graphics Unit
         self.__start_btn["text"] = "Restart"
         self.__start_btn["command"] = self.restart_game
 
-
     def draw_time(self, fr):
         font = Font(family="Segoe UI", size=20)
 
@@ -228,6 +227,16 @@ class BoggleApp:  # Runner and Graphics Unit
         label.pack(fill=X, pady=50)
         fr.pack()
         return label
+
+    def _build_buy_time_button(self, root):
+        """
+        Build a button to buy time with.
+        :return: None
+        """
+        fr = Frame(root)
+        font = Font(name="Segoe UI", size=10)
+        button = Button(fr, font=font, text="+")
+
 
     def message(self, msg):
         self._msg_bar["text"] = msg
@@ -361,6 +370,10 @@ class BoggleApp:  # Runner and Graphics Unit
         self.activate_board_and_addword()
 
     def refresh(self):
+        """
+        Fit all graphic objects according to fitting attributes.
+        :return: None
+        """
         self.__wordplace["text"] = self.__board.get_current_word()
         for coordinate in self._board_buttons.keys():
             matrix = self.__board.get_board()
