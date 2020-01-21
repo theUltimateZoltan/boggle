@@ -24,9 +24,9 @@ class BoggleApp:
         self._msg_bar = None
         # build board at center
         self._board_buttons = dict()
-        self.__boardframe = None
+        self.__board_frame = None
         # word place under the board
-        self.__wordplace = None
+        self.__word_place = None
         self.__add_word_button = None
         # draw all graphic components
         self.init_graphics(self.__util.get_board())
@@ -67,9 +67,9 @@ class BoggleApp:
         # build message bar before board
         self._msg_bar = self._build_message_bar(mid_sec)
         # build board at center
-        self.__boardframe = self._build_board(board, mid_sec)
+        self.__board_frame = self._build_board(board, mid_sec)
         # word place under the board
-        self.__wordplace, self.__add_word_button = self._build_wordplace(mid_sec)
+        self.__word_place, self.__add_word_button = self._build_word_place(mid_sec)
 
         # time and score labels
         self.build_left_frame(left_sec)
@@ -369,7 +369,7 @@ class BoggleApp:
 
         self.refresh()
 
-    def _build_wordplace(self, root):
+    def _build_word_place(self, root):
         """
         Build the line of text in which a work will be assembled by the user.
         :param root: root of the frame
@@ -436,7 +436,7 @@ class BoggleApp:
         Fit all graphic objects according to fitting attributes.
         :return: None
         """
-        self.__wordplace["text"] = self.__board.get_current_word()
+        self.__word_place["text"] = self.__board.get_current_word()
         self.__score["text"] = self.__util.get_score()
 
         for coordinate in self._board_buttons.keys():
