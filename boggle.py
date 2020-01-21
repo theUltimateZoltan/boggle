@@ -11,9 +11,9 @@ class BoggleApp:
     """
 
     def __init__(self):
-        self.__util = Utilities(self)  # Logic Object
-        self.__board = self.__util.get_board()
         self.__root = Tk()  # Main Window
+        self.__util = Utilities(self)  # Logic Obj
+        self.__board = self.__util.get_board()
         self._stats_box = None
         self.__time = [None, Cfg.GAME_TIME]
         self.__score = None
@@ -32,6 +32,11 @@ class BoggleApp:
         self.init_graphics(self.__util.get_board())
 
     def init_graphics(self, board):
+        """
+        Initializes all graphic components.
+        :param board: game board object
+        :return: None
+        """
         self.__root.title("Boggle Game!")
         self.__root.config(bg="white")
         self.__root.resizable(0, 0)
@@ -40,6 +45,11 @@ class BoggleApp:
         self.build_main_frames(board)
 
     def build_main_frames(self, board):
+        """
+        Builds all the graphic components on screen
+        :param board: game board
+        :return: None
+        """
 
         left_sec = Frame(self.__root, width=300, height=300, bg="#FFF")
         mid_sec = Frame(self.__root, width=500, height=700, bg="#FFF")
@@ -65,6 +75,11 @@ class BoggleApp:
         self.build_left_frame(left_sec)
 
     def build_left_frame(self, fr):
+        """
+        Builds all the left-side graphic components of the app.
+        :param fr: left frame
+        :return: None
+        """
         # divide left frame into 2 sub-frames
         top_frame = Frame(fr, height=200, width=300, bg="white")
         bottom_frame = Frame(fr, height=900, width=300, bg="white")
@@ -79,6 +94,11 @@ class BoggleApp:
 
     @staticmethod
     def draw_logo(fr):
+        """
+        Draws game logo on screen
+        :param fr: frame to draw inside
+        :return: None
+        """
         load = Image.open("style/bog_logo.png")
         render = ImageTk.PhotoImage(load)
         img = Label(fr, image=render, borderwidth=0, highlightthickness=0)
@@ -86,6 +106,11 @@ class BoggleApp:
         img.place(x=0, y=0)
 
     def draw_stats_box(self, fr):
+        """
+        Draws the statistics box (time,score) on screen
+        :param fr: frame to draw inside
+        :return: None
+        """
         font = Font(family="Segoe UI", size=12)
         title_font = Font(family="Segoe UI", size=14)
 
@@ -104,6 +129,11 @@ class BoggleApp:
         self.draw_time(self._stats_box), self.draw_score(self._stats_box)
 
     def add_start_button(self, fr):
+        """
+        Add start button to screen
+        :param fr: the button container frame
+        :return: None
+        """
         font = Font(family="Segoe UI", size=12)
 
         self.__start_btn = Button(fr, text="Start", bg="#1ABCB4", font=font
@@ -116,6 +146,11 @@ class BoggleApp:
         self.__start_btn["command"] = self.restart_game
 
     def draw_time(self, fr):
+        """
+        Draws time image and clock on screen
+        :param fr: The time container frame
+        :return: None
+        """
         font = Font(family="Segoe UI", size=20)
 
         # create time label
@@ -144,6 +179,11 @@ class BoggleApp:
         self.__time[0].pack()
 
     def draw_score(self, fr):
+        """
+        Draws score image and text on screen
+        :param fr: the score container frame
+        :return: None
+        """
         font = Font(family="Segoe UI", size=20)
 
         # create score label
@@ -170,7 +210,7 @@ class BoggleApp:
 
     def time_on(self):
         """
-        Start timer and display it on screen
+        Start the timer and display it on screen
         :return:
         """
         time_lbl, time_left = self.__time[0], self.__time[1]
@@ -256,7 +296,7 @@ class BoggleApp:
 
     def activate_board_and_add_word(self):
         """
-        activate the buttons we disabled when initialising
+        Activate the buttons we disabled when initialising
         :return: None
         """
         for button in self._board_buttons.values():
@@ -266,6 +306,10 @@ class BoggleApp:
         self.__add_word_button["state"] = NORMAL
 
     def deactivate_board_and_add_word(self):
+        """
+        Deactivates the letter board selection
+        :return: None
+        """
         for button in self._board_buttons.values():
             button["bg"] = "#1ABCB4"
             button["state"] = DISABLED

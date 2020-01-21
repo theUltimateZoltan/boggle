@@ -4,6 +4,9 @@ import math
 
 
 class Board:
+    """
+    This class represents a letters board
+    """
 
     def __init__(self):
         self.__board = None
@@ -20,10 +23,16 @@ class Board:
         self.__board = randomize_board()
 
     def reset_selection(self):
+        """
+        Reset current letters combination
+        """
         self.__current_word = str()
         self.__selected_indices.clear()
 
     def get_selected_indices(self):
+        """
+        :return: list of tuples of all selected letters indices
+        """
         return self.__selected_indices.copy()
 
     def get_board(self):
