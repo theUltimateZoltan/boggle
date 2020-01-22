@@ -17,6 +17,7 @@ class GameConfig:
         length = len(word)
         return length ** 2
 
+    MIN_SCORE_FOR_BUY_TIME = 20
     TIME_PRICE = 10
     EXTRA_SECONDS = 30
     GAME_TIME = 180  # seconds

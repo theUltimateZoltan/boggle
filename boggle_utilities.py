@@ -51,13 +51,13 @@ class Utilities:
         """
         if not self.__app.get_time_left():
             return
-        if self.__score >= Cfg.TIME_PRICE:
+        if self.__score >= Cfg.MIN_SCORE_FOR_BUY_TIME:
             self.__score -= Cfg.TIME_PRICE
             self.__app.add_time(Cfg.EXTRA_SECONDS)
             self.__app.show_message("Enjoy your extra 30 seconds!")
             self.__app.refresh()
         else:
-            self.__app.show_message("You must have at least 10 points :)")
+            self.__app.show_message("You must have at least 20 points")
 
     def get_correct_words_list(self):
         """
